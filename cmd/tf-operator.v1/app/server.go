@@ -157,7 +157,7 @@ func Run(opt *options.ServerOption) error {
 	rl := &resourcelock.EndpointsLock{
 		EndpointsMeta: metav1.ObjectMeta{
 			Namespace: namespace,
-			Name:      "tf-operator",
+			Name:      "aml-tf-operator",
 		},
 		Client: leaderElectionClientSet.CoreV1(),
 		LockConfig: resourcelock.ResourceLockConfig{
