@@ -30,7 +30,7 @@ var (
 
 const (
 	// GroupName is the group name use in this package.
-	GroupName = "kubeflow.org"
+	GroupName = "azureml.microsoft.com"
 	// Kind is the kind name.
 	Kind = "TFJob"
 	// GroupVersion is the version.
@@ -40,7 +40,7 @@ const (
 	// Singular is the singular for TFJob.
 	Singular = "tfjob"
 	// TFCRD is the CRD name for TFJob.
-	TFCRD = "tfjobs.kubeflow.org"
+	TFCRD = "tfjobs.azureml.microsoft.com"
 )
 
 var (

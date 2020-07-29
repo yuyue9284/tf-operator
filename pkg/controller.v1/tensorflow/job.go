@@ -201,7 +201,7 @@ func (tc *TFController) cleanupTFJob(tfJob *tfv1.TFJob) error {
 
 // deleteTFJob deletes the given TFJob.
 func (tc *TFController) deleteTFJob(tfJob *tfv1.TFJob) error {
-	return tc.tfJobClientSet.KubeflowV1().TFJobs(tfJob.Namespace).Delete(tfJob.Name, &metav1.DeleteOptions{})
+	return tc.tfJobClientSet.AzuremlV1().TFJobs(tfJob.Namespace).Delete(tfJob.Name, &metav1.DeleteOptions{})
 }
 
 func getTotalReplicas(tfjob *tfv1.TFJob) int32 {

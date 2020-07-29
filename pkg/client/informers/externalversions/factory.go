@@ -170,9 +170,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Kubeflow() tensorflow.Interface
+	Azureml() tensorflow.Interface
 }
 
-func (f *sharedInformerFactory) Kubeflow() tensorflow.Interface {
+func (f *sharedInformerFactory) Azureml() tensorflow.Interface {
 	return tensorflow.New(f, f.namespace, f.tweakListOptions)
 }

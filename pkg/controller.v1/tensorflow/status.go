@@ -179,7 +179,7 @@ func (tc *TFController) updateTFJobStatus(tfjob *tfv1.TFJob) error {
 		tflogger.LoggerForJob(tfjob).Infof("Finished updating TFJobs Status %q (%v)",
 			tfjob.Name, time.Since(startTime))
 	}()
-	_, err := tc.tfJobClientSet.KubeflowV1().TFJobs(tfjob.Namespace).UpdateStatus(tfjob)
+	_, err := tc.tfJobClientSet.AzuremlV1().TFJobs(tfjob.Namespace).UpdateStatus(tfjob)
 	return err
 }
 

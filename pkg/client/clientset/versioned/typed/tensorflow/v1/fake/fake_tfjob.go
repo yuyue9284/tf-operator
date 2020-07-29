@@ -28,13 +28,13 @@ import (
 
 // FakeTFJobs implements TFJobInterface
 type FakeTFJobs struct {
-	Fake *FakeKubeflowV1
+	Fake *FakeAzuremlV1
 	ns   string
 }
 
-var tfjobsResource = schema.GroupVersionResource{Group: "kubeflow.org", Version: "v1", Resource: "tfjobs"}
+var tfjobsResource = schema.GroupVersionResource{Group: "azureml.microsoft.com", Version: "v1", Resource: "tfjobs"}
 
-var tfjobsKind = schema.GroupVersionKind{Group: "kubeflow.org", Version: "v1", Kind: "TFJob"}
+var tfjobsKind = schema.GroupVersionKind{Group: "azureml.microsoft.com", Version: "v1", Kind: "TFJob"}
 
 // Get takes name of the tFJob, and returns the corresponding tFJob object, and an error if there is any.
 func (c *FakeTFJobs) Get(name string, options v1.GetOptions) (result *tensorflowv1.TFJob, err error) {

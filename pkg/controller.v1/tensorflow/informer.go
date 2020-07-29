@@ -55,7 +55,7 @@ func NewUnstructuredTFJobInformer(restConfig *restclientset.Config, namespace st
 
 // NewTFJobInformer returns TFJobInformer from the given factory.
 func (tc *TFController) NewTFJobInformer(tfJobInformerFactory tfjobinformers.SharedInformerFactory) tfjobinformersv1.TFJobInformer {
-	return tfJobInformerFactory.Kubeflow().V1().TFJobs()
+	return tfJobInformerFactory.Azureml().V1().TFJobs()
 }
 
 func (tc *TFController) getTFJobFromName(namespace, name string) (*tfv1.TFJob, error) {

@@ -576,7 +576,7 @@ func (tc *TFController) GetJobFromInformerCache(namespace, name string) (metav1.
 }
 
 func (tc *TFController) GetJobFromAPIClient(namespace, name string) (metav1.Object, error) {
-	return tc.tfJobClientSet.KubeflowV1().TFJobs(namespace).Get(name, metav1.GetOptions{})
+	return tc.tfJobClientSet.AzuremlV1().TFJobs(namespace).Get(name, metav1.GetOptions{})
 }
 
 func (tc *TFController) GetAPIGroupVersionKind() schema.GroupVersionKind {

@@ -22,17 +22,17 @@ import (
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeKubeflowV1 struct {
+type FakeAzuremlV1 struct {
 	*testing.Fake
 }
 
-func (c *FakeKubeflowV1) TFJobs(namespace string) v1.TFJobInterface {
+func (c *FakeAzuremlV1) TFJobs(namespace string) v1.TFJobInterface {
 	return &FakeTFJobs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeKubeflowV1) RESTClient() rest.Interface {
+func (c *FakeAzuremlV1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }
