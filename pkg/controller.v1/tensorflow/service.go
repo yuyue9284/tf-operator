@@ -33,7 +33,7 @@ import (
 // reconcileServices checks and updates services for each given TFReplicaSpec.
 // It will requeue the tfjob in case of an error while creating/deleting services.
 func (tc *TFController) reconcileServices(
-	tfjob *tfv1.TFJob,
+	tfjob *tfv1.AmlTFJob,
 	services []*v1.Service,
 	rtype tfv1.TFReplicaType,
 	spec *common.ReplicaSpec) error {
@@ -82,7 +82,7 @@ func (tc *TFController) reconcileServices(
 }
 
 // createNewService creates a new service for the given index and type.
-func (tc *TFController) createNewService(tfjob *tfv1.TFJob, rtype tfv1.TFReplicaType, index string, spec *common.ReplicaSpec) error {
+func (tc *TFController) createNewService(tfjob *tfv1.AmlTFJob, rtype tfv1.TFReplicaType, index string, spec *common.ReplicaSpec) error {
 	tfjobKey, err := KeyFunc(tfjob)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("couldn't get key for tfjob object %#v: %v", tfjob, err))

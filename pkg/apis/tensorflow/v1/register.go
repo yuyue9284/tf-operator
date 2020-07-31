@@ -32,15 +32,15 @@ const (
 	// GroupName is the group name use in this package.
 	GroupName = "azureml.microsoft.com"
 	// Kind is the kind name.
-	Kind = "TFJob"
+	Kind = "AmlTFJob"
 	// GroupVersion is the version.
 	GroupVersion = "v1"
 	// Plural is the Plural for TFJob.
-	Plural = "tfjobs"
+	Plural = "amltfjobs"
 	// Singular is the singular for TFJob.
-	Singular = "tfjob"
+	Singular = "amltfjob"
 	// TFCRD is the CRD name for TFJob.
-	TFCRD = "tfjobs.azureml.microsoft.com"
+	TFCRD = "amltfjobs.azureml.microsoft.com"
 )
 
 var (
@@ -66,8 +66,8 @@ func Resource(resource string) schema.GroupResource {
 // addKnownTypes adds the set of types defined in this package to the supplied scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
-		&TFJob{},
-		&TFJobList{},
+		&AmlTFJob{},
+		&AmlTFJobList{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil

@@ -52,7 +52,7 @@ const (
 // reconcilePods checks and updates pods for each given TFReplicaSpec.
 // It will requeue the tfjob in case of an error while creating/deleting pods.
 func (tc *TFController) reconcilePods(
-	tfjob *tfv1.TFJob,
+	tfjob *tfv1.AmlTFJob,
 	pods []*v1.Pod,
 	rtype tfv1.TFReplicaType,
 	spec *common.ReplicaSpec, rstatus map[string]v1.PodPhase) error {
@@ -151,7 +151,7 @@ func (tc *TFController) reconcilePods(
 }
 
 // createNewPod creates a new pod for the given index and type.
-func (tc *TFController) createNewPod(tfjob *tfv1.TFJob, rt, index string, spec *common.ReplicaSpec, masterRole bool) error {
+func (tc *TFController) createNewPod(tfjob *tfv1.AmlTFJob, rt, index string, spec *common.ReplicaSpec, masterRole bool) error {
 	tfjobKey, err := KeyFunc(tfjob)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("couldn't get key for tfjob object %#v: %v", tfjob, err))
@@ -237,7 +237,7 @@ func (tc *TFController) createNewPod(tfjob *tfv1.TFJob, rt, index string, spec *
 }
 
 // setClusterSpec generates and sets TF_CONFIG for the given podTemplateSpec.
-func setClusterSpec(podTemplateSpec *v1.PodTemplateSpec, tfjob *tfv1.TFJob, rt, index string) error {
+func setClusterSpec(podTemplateSpec *v1.PodTemplateSpec, tfjob *tfv1.AmlTFJob, rt, index string) error {
 	// Do not set TF_CONFIG for local training jobs.
 	if !isDistributed(tfjob) {
 		return nil
@@ -269,7 +269,7 @@ func setClusterSpec(podTemplateSpec *v1.PodTemplateSpec, tfjob *tfv1.TFJob, rt, 
 
 // isDistributed returns if the TFJob is a distributed training job.
 // Ref https://github.com/kubeflow/tf-operator/issues/1078.
-func isDistributed(tfjob *tfv1.TFJob) bool {
+func isDistributed(tfjob *tfv1.AmlTFJob) bool {
 	replicas := tfjob.Spec.TFReplicaSpecs
 	distributionCount := 0
 	allTypes := []tfv1.TFReplicaType{
@@ -300,7 +300,7 @@ func setRestartPolicy(podTemplateSpec *v1.PodTemplateSpec, spec *common.ReplicaS
 	}
 }
 
-func (tc *TFController) isNonGangSchedulerSet(tfjob *tfv1.TFJob) bool {
+func (tc *TFController) isNonGangSchedulerSet(tfjob *tfv1.AmlTFJob) bool {
 	for _, spec := range tfjob.Spec.TFReplicaSpecs {
 		if spec.Template.Spec.SchedulerName != "" && spec.Template.Spec.SchedulerName != tc.Config.GangSchedulerName {
 			return true

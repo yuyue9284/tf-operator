@@ -94,7 +94,7 @@ func convertClusterSpecToSparseClusterSpec(clusterSpec ClusterSpec, rtype string
 //         },
 //     }
 // }
-func genTFConfigJSONStr(tfjob *tfv1.TFJob, rtype, index string) (string, error) {
+func genTFConfigJSONStr(tfjob *tfv1.AmlTFJob, rtype, index string) (string, error) {
 	// Configure the TFCONFIG environment variable.
 	i, err := strconv.ParseInt(index, 0, 32)
 	if err != nil {
@@ -139,7 +139,7 @@ func genTFConfigJSONStr(tfjob *tfv1.TFJob, rtype, index string) (string, error) 
 }
 
 // genClusterSpec will generate ClusterSpec.
-func genClusterSpec(tfjob *tfv1.TFJob) (ClusterSpec, error) {
+func genClusterSpec(tfjob *tfv1.AmlTFJob) (ClusterSpec, error) {
 	clusterSpec := make(ClusterSpec)
 
 	for rtype, spec := range tfjob.Spec.TFReplicaSpecs {

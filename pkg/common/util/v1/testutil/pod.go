@@ -35,7 +35,7 @@ var (
 	controllerKind = tfv1.SchemeGroupVersionKind
 )
 
-func NewBasePod(name string, tfJob *tfv1.TFJob) *v1.Pod {
+func NewBasePod(name string, tfJob *tfv1.AmlTFJob) *v1.Pod {
 	return &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            name,
@@ -46,7 +46,7 @@ func NewBasePod(name string, tfJob *tfv1.TFJob) *v1.Pod {
 	}
 }
 
-func NewPod(tfJob *tfv1.TFJob, typ string, index int) *v1.Pod {
+func NewPod(tfJob *tfv1.AmlTFJob, typ string, index int) *v1.Pod {
 	pod := NewBasePod(fmt.Sprintf("%s-%d", typ, index), tfJob)
 	pod.Labels[tfReplicaTypeLabel] = typ
 	pod.Labels[tfReplicaIndexLabel] = fmt.Sprintf("%d", index)
@@ -54,7 +54,7 @@ func NewPod(tfJob *tfv1.TFJob, typ string, index int) *v1.Pod {
 }
 
 // create count pods with the given phase for the given tfJob
-func NewPodList(count int32, status v1.PodPhase, tfJob *tfv1.TFJob, typ string, start int32) []*v1.Pod {
+func NewPodList(count int32, status v1.PodPhase, tfJob *tfv1.AmlTFJob, typ string, start int32) []*v1.Pod {
 	pods := []*v1.Pod{}
 	for i := int32(0); i < count; i++ {
 		newPod := NewPod(tfJob, typ, int(start+i))
@@ -64,7 +64,7 @@ func NewPodList(count int32, status v1.PodPhase, tfJob *tfv1.TFJob, typ string, 
 	return pods
 }
 
-func SetPodsStatuses(podIndexer cache.Indexer, tfJob *tfv1.TFJob, typ string, pendingPods, activePods, succeededPods, failedPods int32, restartCounts []int32, t *testing.T) {
+func SetPodsStatuses(podIndexer cache.Indexer, tfJob *tfv1.AmlTFJob, typ string, pendingPods, activePods, succeededPods, failedPods int32, restartCounts []int32, t *testing.T) {
 	var index int32
 	for _, pod := range NewPodList(pendingPods, v1.PodPending, tfJob, typ, index) {
 		if err := podIndexer.Add(pod); err != nil {

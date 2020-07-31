@@ -83,17 +83,17 @@ type TFController struct {
 	syncHandler func(string) (bool, error)
 
 	// To allow injection of updateStatus for testing.
-	updateStatusHandler func(tfjob *tfv1.TFJob) error
+	updateStatusHandler func(tfjob *tfv1.AmlTFJob) error
 
 	// To allow injection of deleteTFJob for testing.
-	deleteTFJobHandler func(tfjob *tfv1.TFJob) error
+	deleteTFJobHandler func(tfjob *tfv1.AmlTFJob) error
 
 	// tfJobInformer is a temporary field for unstructured informer support.
 	tfJobInformer cache.SharedIndexInformer
 
 	// Listers for TFJob, Pod and Service
 	// tfJobLister can list/get tfjobs from the shared informer's store.
-	tfJobLister tfjoblisters.TFJobLister
+	tfJobLister tfjoblisters.AmlTFJobLister
 
 	// tfJobInformerSynced returns true if the tfjob store has been synced at least once.
 	tfJobInformerSynced cache.InformerSynced
@@ -102,7 +102,7 @@ type TFController struct {
 // NewTFController returns a new TFJob controller.
 func NewTFController(
 	// This variable is for unstructured informer.
-	tfJobInformer tfjobinformersv1.TFJobInformer,
+	tfJobInformer tfjobinformersv1.AmlTFJobInformer,
 	kubeClientSet kubeclientset.Interface,
 	kubeBatchClientSet kubebatchclient.Interface,
 	tfJobClientSet tfjobclientset.Interface,
@@ -331,7 +331,7 @@ func (tc *TFController) syncTFJob(key string) (bool, error) {
 
 // reconcileTFJobs checks and updates replicas for each given TFReplicaSpec.
 // It will requeue the tfjob in case of an error while creating/deleting pods/services.
-func (tc *TFController) reconcileTFJobs(tfjob *tfv1.TFJob) error {
+func (tc *TFController) reconcileTFJobs(tfjob *tfv1.AmlTFJob) error {
 	tfjobKey, err := KeyFunc(tfjob)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("couldn't get key for tfjob object %#v: %v", tfjob, err))
@@ -498,7 +498,7 @@ func (tc *TFController) reconcileTFJobs(tfjob *tfv1.TFJob) error {
 // satisfiedExpectations returns true if the required adds/dels for the given tfjob have been observed.
 // Add/del counts are established by the controller at sync time, and updated as controllees are observed by the controller
 // manager.
-func (tc *TFController) satisfiedExpectations(tfjob *tfv1.TFJob) bool {
+func (tc *TFController) satisfiedExpectations(tfjob *tfv1.AmlTFJob) bool {
 	satisfied := true
 	tfjobKey, err := KeyFunc(tfjob)
 	if err != nil {
@@ -521,7 +521,7 @@ func (tc *TFController) satisfiedExpectations(tfjob *tfv1.TFJob) bool {
 
 // pastBackoffLimit checks if container restartCounts sum exceeds BackoffLimit
 // this method applies only to pods with restartPolicy == OnFailure or Always
-func (tc *TFController) pastBackoffLimit(tfjob *tfv1.TFJob, pods []*v1.Pod) (bool, error) {
+func (tc *TFController) pastBackoffLimit(tfjob *tfv1.AmlTFJob, pods []*v1.Pod) (bool, error) {
 	if tfjob.Spec.BackoffLimit == nil {
 		return false, nil
 	}
@@ -560,7 +560,7 @@ func (tc *TFController) pastBackoffLimit(tfjob *tfv1.TFJob, pods []*v1.Pod) (boo
 }
 
 // pastActiveDeadline checks if job has ActiveDeadlineSeconds field set and if it is exceeded.
-func (tc *TFController) pastActiveDeadline(tfjob *tfv1.TFJob) bool {
+func (tc *TFController) pastActiveDeadline(tfjob *tfv1.AmlTFJob) bool {
 	if tfjob.Spec.ActiveDeadlineSeconds == nil || tfjob.Status.StartTime == nil {
 		return false
 	}
@@ -576,7 +576,7 @@ func (tc *TFController) GetJobFromInformerCache(namespace, name string) (metav1.
 }
 
 func (tc *TFController) GetJobFromAPIClient(namespace, name string) (metav1.Object, error) {
-	return tc.tfJobClientSet.AzuremlV1().TFJobs(namespace).Get(name, metav1.GetOptions{})
+	return tc.tfJobClientSet.AzuremlV1().AmlTFJobs(namespace).Get(name, metav1.GetOptions{})
 }
 
 func (tc *TFController) GetAPIGroupVersionKind() schema.GroupVersionKind {

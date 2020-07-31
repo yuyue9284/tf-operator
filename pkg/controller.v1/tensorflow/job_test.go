@@ -81,10 +81,10 @@ func TestAddTFJob(t *testing.T) {
 		<-syncChan
 		return true, nil
 	}
-	ctr.updateStatusHandler = func(tfjob *tfv1.TFJob) error {
+	ctr.updateStatusHandler = func(tfjob *tfv1.AmlTFJob) error {
 		return nil
 	}
-	ctr.deleteTFJobHandler = func(tfjob *tfv1.TFJob) error {
+	ctr.deleteTFJobHandler = func(tfjob *tfv1.AmlTFJob) error {
 		return nil
 	}
 
@@ -147,7 +147,7 @@ func TestCopyLabelsAndAnnotation(t *testing.T) {
 	}
 	go run(stopCh)
 
-	ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+	ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 		return nil
 	}
 
@@ -200,7 +200,7 @@ func TestCopyLabelsAndAnnotation(t *testing.T) {
 func TestDeletePodsAndServices(t *testing.T) {
 	type testCase struct {
 		description string
-		tfJob       *tfv1.TFJob
+		tfJob       *tfv1.AmlTFJob
 
 		pendingWorkerPods   int32
 		activeWorkerPods    int32
@@ -332,7 +332,7 @@ func TestDeletePodsAndServices(t *testing.T) {
 		ctr.PodInformerSynced = testutil.AlwaysReady
 		ctr.ServiceInformerSynced = testutil.AlwaysReady
 		tfJobIndexer := ctr.tfJobInformer.GetIndexer()
-		ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+		ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 			return nil
 		}
 
@@ -379,7 +379,7 @@ func TestDeletePodsAndServices(t *testing.T) {
 func TestCleanupTFJob(t *testing.T) {
 	type testCase struct {
 		description string
-		tfJob       *tfv1.TFJob
+		tfJob       *tfv1.AmlTFJob
 
 		pendingWorkerPods   int32
 		activeWorkerPods    int32
@@ -496,11 +496,11 @@ func TestCleanupTFJob(t *testing.T) {
 		ctr.PodInformerSynced = testutil.AlwaysReady
 		ctr.ServiceInformerSynced = testutil.AlwaysReady
 		tfJobIndexer := ctr.tfJobInformer.GetIndexer()
-		ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+		ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 			return nil
 		}
 		deleteFinished := false
-		ctr.deleteTFJobHandler = func(tfJob *tfv1.TFJob) error {
+		ctr.deleteTFJobHandler = func(tfJob *tfv1.AmlTFJob) error {
 			deleteFinished = true
 			return nil
 		}
@@ -553,7 +553,7 @@ func TestCleanupTFJob(t *testing.T) {
 func TestActiveDeadlineSeconds(t *testing.T) {
 	type testCase struct {
 		description string
-		tfJob       *tfv1.TFJob
+		tfJob       *tfv1.AmlTFJob
 
 		pendingWorkerPods   int32
 		activeWorkerPods    int32
@@ -649,7 +649,7 @@ func TestActiveDeadlineSeconds(t *testing.T) {
 		ctr.PodInformerSynced = testutil.AlwaysReady
 		ctr.ServiceInformerSynced = testutil.AlwaysReady
 		tfJobIndexer := ctr.tfJobInformer.GetIndexer()
-		ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+		ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 			return nil
 		}
 
@@ -697,7 +697,7 @@ func TestActiveDeadlineSeconds(t *testing.T) {
 func TestBackoffForOnFailure(t *testing.T) {
 	type testCase struct {
 		description string
-		tfJob       *tfv1.TFJob
+		tfJob       *tfv1.AmlTFJob
 
 		pendingWorkerPods   int32
 		activeWorkerPods    int32
@@ -778,7 +778,7 @@ func TestBackoffForOnFailure(t *testing.T) {
 		ctr.PodInformerSynced = testutil.AlwaysReady
 		ctr.ServiceInformerSynced = testutil.AlwaysReady
 		tfJobIndexer := ctr.tfJobInformer.GetIndexer()
-		ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+		ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 			return nil
 		}
 

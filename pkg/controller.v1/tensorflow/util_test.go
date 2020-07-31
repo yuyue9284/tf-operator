@@ -28,7 +28,7 @@ import (
 func TestGenOwnerReference(t *testing.T) {
 	testName := "test-tfjob"
 	testUID := types.UID("test-UID")
-	tfJob := &tfv1.TFJob{
+	tfJob := &tfv1.AmlTFJob{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: testName,
 			UID:  testUID,
@@ -71,7 +71,7 @@ func TestGenLabels(t *testing.T) {
 func TestConvertTFJobToUnstructured(t *testing.T) {
 	testName := "test-tfjob"
 	testUID := types.UID("test-UID")
-	tfJob := &tfv1.TFJob{
+	tfJob := &tfv1.AmlTFJob{
 		TypeMeta: metav1.TypeMeta{
 			Kind: tfv1.Kind,
 		},

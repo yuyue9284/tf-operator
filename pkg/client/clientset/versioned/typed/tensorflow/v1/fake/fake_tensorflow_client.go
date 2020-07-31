@@ -26,8 +26,8 @@ type FakeAzuremlV1 struct {
 	*testing.Fake
 }
 
-func (c *FakeAzuremlV1) TFJobs(namespace string) v1.TFJobInterface {
-	return &FakeTFJobs{c, namespace}
+func (c *FakeAzuremlV1) AmlTFJobs(namespace string) v1.AmlTFJobInterface {
+	return &FakeAmlTFJobs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

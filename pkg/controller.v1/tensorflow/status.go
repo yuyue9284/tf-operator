@@ -58,7 +58,7 @@ var (
 )
 
 // updateStatus updates the status of the tfjob.
-func (tc *TFController) updateStatusSingle(tfjob *tfv1.TFJob, rtype tfv1.TFReplicaType, replicas int, restart, worker0Completed bool) error {
+func (tc *TFController) updateStatusSingle(tfjob *tfv1.AmlTFJob, rtype tfv1.TFReplicaType, replicas int, restart, worker0Completed bool) error {
 	tfjobKey, err := KeyFunc(tfjob)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("couldn't get key for tfjob object %#v: %v", tfjob, err))
@@ -173,25 +173,25 @@ func (tc *TFController) updateStatusSingle(tfjob *tfv1.TFJob, rtype tfv1.TFRepli
 }
 
 // updateTFJobStatus updates the status of the given TFJob.
-func (tc *TFController) updateTFJobStatus(tfjob *tfv1.TFJob) error {
+func (tc *TFController) updateTFJobStatus(tfjob *tfv1.AmlTFJob) error {
 	startTime := time.Now()
 	defer func() {
 		tflogger.LoggerForJob(tfjob).Infof("Finished updating TFJobs Status %q (%v)",
 			tfjob.Name, time.Since(startTime))
 	}()
-	_, err := tc.tfJobClientSet.AzuremlV1().TFJobs(tfjob.Namespace).UpdateStatus(tfjob)
+	_, err := tc.tfJobClientSet.AzuremlV1().AmlTFJobs(tfjob.Namespace).UpdateStatus(tfjob)
 	return err
 }
 
 // updateTFJobConditions updates the conditions of the given tfjob.
-func updateTFJobConditions(tfjob *tfv1.TFJob, conditionType common.JobConditionType, reason, message string) error {
+func updateTFJobConditions(tfjob *tfv1.AmlTFJob, conditionType common.JobConditionType, reason, message string) error {
 	condition := newCondition(conditionType, reason, message)
 	setCondition(&tfjob.Status, condition)
 	return nil
 }
 
 // initializeTFReplicaStatuses initializes the ReplicaStatuses for replica.
-func initializeTFReplicaStatuses(tfjob *tfv1.TFJob, rtype tfv1.TFReplicaType) {
+func initializeTFReplicaStatuses(tfjob *tfv1.AmlTFJob, rtype tfv1.TFReplicaType) {
 	commonType := common.ReplicaType(rtype)
 	if tfjob.Status.ReplicaStatuses == nil {
 		tfjob.Status.ReplicaStatuses = make(map[common.ReplicaType]*common.ReplicaStatus)
@@ -201,7 +201,7 @@ func initializeTFReplicaStatuses(tfjob *tfv1.TFJob, rtype tfv1.TFReplicaType) {
 }
 
 // updateTFJobReplicaStatuses updates the TFJobReplicaStatuses according to the pod.
-func updateTFJobReplicaStatuses(tfjob *tfv1.TFJob, rtype tfv1.TFReplicaType, pod *v1.Pod) {
+func updateTFJobReplicaStatuses(tfjob *tfv1.AmlTFJob, rtype tfv1.TFReplicaType, pod *v1.Pod) {
 	commonType := common.ReplicaType(rtype)
 	switch pod.Status.Phase {
 	case v1.PodRunning:

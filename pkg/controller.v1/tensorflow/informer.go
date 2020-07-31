@@ -31,7 +31,7 @@ var (
 	errFailedMarshal = fmt.Errorf("failed to marshal the object to TFJob")
 )
 
-func NewUnstructuredTFJobInformer(restConfig *restclientset.Config, namespace string) tfjobinformersv1.TFJobInformer {
+func NewUnstructuredTFJobInformer(restConfig *restclientset.Config, namespace string) tfjobinformersv1.AmlTFJobInformer {
 	dclient, err := dynamic.NewForConfig(restConfig)
 	if err != nil {
 		panic(err)
@@ -54,16 +54,16 @@ func NewUnstructuredTFJobInformer(restConfig *restclientset.Config, namespace st
 }
 
 // NewTFJobInformer returns TFJobInformer from the given factory.
-func (tc *TFController) NewTFJobInformer(tfJobInformerFactory tfjobinformers.SharedInformerFactory) tfjobinformersv1.TFJobInformer {
-	return tfJobInformerFactory.Azureml().V1().TFJobs()
+func (tc *TFController) NewTFJobInformer(tfJobInformerFactory tfjobinformers.SharedInformerFactory) tfjobinformersv1.AmlTFJobInformer {
+	return tfJobInformerFactory.Azureml().V1().AmlTFJobs()
 }
 
-func (tc *TFController) getTFJobFromName(namespace, name string) (*tfv1.TFJob, error) {
+func (tc *TFController) getTFJobFromName(namespace, name string) (*tfv1.AmlTFJob, error) {
 	key := fmt.Sprintf("%s/%s", namespace, name)
 	return tc.getTFJobFromKey(key)
 }
 
-func (tc *TFController) getTFJobFromKey(key string) (*tfv1.TFJob, error) {
+func (tc *TFController) getTFJobFromKey(key string) (*tfv1.AmlTFJob, error) {
 	// Check if the key exists.
 	obj, exists, err := tc.tfJobInformer.GetIndexer().GetByKey(key)
 	logger := tflogger.LoggerForKey(key)
@@ -79,14 +79,14 @@ func (tc *TFController) getTFJobFromKey(key string) (*tfv1.TFJob, error) {
 	return tfJobFromUnstructured(obj)
 }
 
-func tfJobFromUnstructured(obj interface{}) (*tfv1.TFJob, error) {
+func tfJobFromUnstructured(obj interface{}) (*tfv1.AmlTFJob, error) {
 	// Check if the spec is valid.
 	un, ok := obj.(*metav1unstructured.Unstructured)
 	if !ok {
 		log.Errorf("The object in index is not an unstructured; %+v", obj)
 		return nil, errGetFromKey
 	}
-	var tfjob tfv1.TFJob
+	var tfjob tfv1.AmlTFJob
 	err := runtime.DefaultUnstructuredConverter.FromUnstructured(un.Object, &tfjob)
 	logger := tflogger.LoggerForUnstructured(un, tfv1.Kind)
 	if err != nil {
@@ -104,7 +104,7 @@ func tfJobFromUnstructured(obj interface{}) (*tfv1.TFJob, error) {
 	return &tfjob, nil
 }
 
-func unstructuredFromTFJob(obj interface{}, tfJob *tfv1.TFJob) error {
+func unstructuredFromTFJob(obj interface{}, tfJob *tfv1.AmlTFJob) error {
 	un, ok := obj.(*metav1unstructured.Unstructured)
 	logger := tflogger.LoggerForJob(tfJob)
 	if !ok {

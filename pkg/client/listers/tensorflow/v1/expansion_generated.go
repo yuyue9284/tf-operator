@@ -16,10 +16,10 @@
 
 package v1
 
-// TFJobListerExpansion allows custom methods to be added to
-// TFJobLister.
-type TFJobListerExpansion interface{}
+// AmlTFJobListerExpansion allows custom methods to be added to
+// AmlTFJobLister.
+type AmlTFJobListerExpansion interface{}
 
-// TFJobNamespaceListerExpansion allows custom methods to be added to
-// TFJobNamespaceLister.
-type TFJobNamespaceListerExpansion interface{}
+// AmlTFJobNamespaceListerExpansion allows custom methods to be added to
+// AmlTFJobNamespaceLister.
+type AmlTFJobNamespaceListerExpansion interface{}

@@ -53,7 +53,7 @@ func GenLabels(jobName string) map[string]string {
 	}
 }
 
-func GenOwnerReference(tfjob *tfv1.TFJob) *metav1.OwnerReference {
+func GenOwnerReference(tfjob *tfv1.AmlTFJob) *metav1.OwnerReference {
 	boolPtr := func(b bool) *bool { return &b }
 	controllerRef := &metav1.OwnerReference{
 		APIVersion:         tfv1.SchemeGroupVersion.String(),
@@ -68,7 +68,7 @@ func GenOwnerReference(tfjob *tfv1.TFJob) *metav1.OwnerReference {
 }
 
 // ConvertTFJobToUnstructured uses function ToUnstructured to convert TFJob to Unstructured.
-func ConvertTFJobToUnstructured(tfJob *tfv1.TFJob) (*unstructured.Unstructured, error) {
+func ConvertTFJobToUnstructured(tfJob *tfv1.AmlTFJob) (*unstructured.Unstructured, error) {
 	object, err := runtime.DefaultUnstructuredConverter.ToUnstructured(tfJob)
 	if err != nil {
 		return nil, err
@@ -78,7 +78,7 @@ func ConvertTFJobToUnstructured(tfJob *tfv1.TFJob) (*unstructured.Unstructured, 
 	}, nil
 }
 
-func GetKey(tfJob *tfv1.TFJob, t *testing.T) string {
+func GetKey(tfJob *tfv1.AmlTFJob, t *testing.T) string {
 	key, err := KeyFunc(tfJob)
 	if err != nil {
 		t.Errorf("Unexpected error getting key for job %v: %v", tfJob.Name, err)
@@ -87,7 +87,7 @@ func GetKey(tfJob *tfv1.TFJob, t *testing.T) string {
 	return key
 }
 
-func CheckCondition(tfJob *tfv1.TFJob, condition common.JobConditionType, reason string) bool {
+func CheckCondition(tfJob *tfv1.AmlTFJob, condition common.JobConditionType, reason string) bool {
 	for _, v := range tfJob.Status.Conditions {
 		if v.Type == condition && v.Status == v1.ConditionTrue && v.Reason == reason {
 			return true

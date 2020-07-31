@@ -67,7 +67,7 @@ func setDefaultReplicas(spec *common.ReplicaSpec) {
 }
 
 // setTypeNamesToCamelCase sets the name of all replica types from any case to correct case.
-func setTypeNamesToCamelCase(tfJob *TFJob) {
+func setTypeNamesToCamelCase(tfJob *AmlTFJob) {
 	setTypeNameToCamelCase(tfJob, TFReplicaTypePS)
 	setTypeNameToCamelCase(tfJob, TFReplicaTypeWorker)
 	setTypeNameToCamelCase(tfJob, TFReplicaTypeChief)
@@ -77,7 +77,7 @@ func setTypeNamesToCamelCase(tfJob *TFJob) {
 
 // setTypeNameToCamelCase sets the name of the replica type from any case to correct case.
 // E.g. from ps to PS; from WORKER to Worker.
-func setTypeNameToCamelCase(tfJob *TFJob, typ TFReplicaType) {
+func setTypeNameToCamelCase(tfJob *AmlTFJob, typ TFReplicaType) {
 	for t := range tfJob.Spec.TFReplicaSpecs {
 		if strings.EqualFold(string(t), string(typ)) && t != typ {
 			spec := tfJob.Spec.TFReplicaSpecs[t]
@@ -88,8 +88,8 @@ func setTypeNameToCamelCase(tfJob *TFJob, typ TFReplicaType) {
 	}
 }
 
-// SetDefaults_TFJob sets any unspecified values to defaults.
-func SetDefaults_TFJob(tfjob *TFJob) {
+// SetDefaults_AmlTFJob sets any unspecified values to defaults.
+func SetDefaults_AmlTFJob(tfjob *AmlTFJob) {
 	// Set default cleanpod policy to Running.
 	if tfjob.Spec.CleanPodPolicy == nil {
 		running := common.CleanPodPolicyRunning

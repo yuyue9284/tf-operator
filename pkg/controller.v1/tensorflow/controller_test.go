@@ -236,8 +236,8 @@ func TestNormalPath(t *testing.T) {
 		ctr.ServiceInformerSynced = testutil.AlwaysReady
 		tfJobIndexer := ctr.tfJobInformer.GetIndexer()
 
-		var actual *tfv1.TFJob
-		ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+		var actual *tfv1.AmlTFJob
+		ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 			actual = tfJob
 			return nil
 		}

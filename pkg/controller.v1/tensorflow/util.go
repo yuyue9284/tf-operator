@@ -25,7 +25,7 @@ var (
 )
 
 // GetPortFromTFJob gets the port of tensorflow container.
-func GetPortFromTFJob(tfJob *tfv1.TFJob, rtype tfv1.TFReplicaType) (int32, error) {
+func GetPortFromTFJob(tfJob *tfv1.AmlTFJob, rtype tfv1.TFReplicaType) (int32, error) {
 	containers := tfJob.Spec.TFReplicaSpecs[rtype].Template.Spec.Containers
 	for _, container := range containers {
 		if container.Name == tfv1.DefaultContainerName {
@@ -41,7 +41,7 @@ func GetPortFromTFJob(tfJob *tfv1.TFJob, rtype tfv1.TFReplicaType) (int32, error
 }
 
 // ContainChieforMasterSpec returns true if the tfjob contains chief or master spec.
-func ContainChieforMasterSpec(tfJob *tfv1.TFJob) bool {
+func ContainChieforMasterSpec(tfJob *tfv1.AmlTFJob) bool {
 	if _, ok := tfJob.Spec.TFReplicaSpecs[tfv1.TFReplicaTypeChief]; ok {
 		return true
 	} else if _, ok := tfJob.Spec.TFReplicaSpecs[tfv1.TFReplicaTypeMaster]; ok {

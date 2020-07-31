@@ -16,4 +16,4 @@
 
 package v1
 
-type TFJobExpansion interface{}
+type AmlTFJobExpansion interface{}

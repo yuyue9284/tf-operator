@@ -26,18 +26,18 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&TFJob{}, func(obj interface{}) { SetObjectDefaults_TFJob(obj.(*TFJob)) })
-	scheme.AddTypeDefaultingFunc(&TFJobList{}, func(obj interface{}) { SetObjectDefaults_TFJobList(obj.(*TFJobList)) })
+	scheme.AddTypeDefaultingFunc(&AmlTFJob{}, func(obj interface{}) { SetObjectDefaults_AmlTFJob(obj.(*AmlTFJob)) })
+	scheme.AddTypeDefaultingFunc(&AmlTFJobList{}, func(obj interface{}) { SetObjectDefaults_AmlTFJobList(obj.(*AmlTFJobList)) })
 	return nil
 }
 
-func SetObjectDefaults_TFJob(in *TFJob) {
-	SetDefaults_TFJob(in)
+func SetObjectDefaults_AmlTFJob(in *AmlTFJob) {
+	SetDefaults_AmlTFJob(in)
 }
 
-func SetObjectDefaults_TFJobList(in *TFJobList) {
+func SetObjectDefaults_AmlTFJobList(in *AmlTFJobList) {
 	for i := range in.Items {
 		a := &in.Items[i]
-		SetObjectDefaults_TFJob(a)
+		SetObjectDefaults_AmlTFJob(a)
 	}
 }

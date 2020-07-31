@@ -29,59 +29,59 @@ import (
 	cache "k8s.io/client-go/tools/cache"
 )
 
-// TFJobInformer provides access to a shared informer and lister for
-// TFJobs.
-type TFJobInformer interface {
+// AmlTFJobInformer provides access to a shared informer and lister for
+// AmlTFJobs.
+type AmlTFJobInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1.TFJobLister
+	Lister() v1.AmlTFJobLister
 }
 
-type tFJobInformer struct {
+type amlTFJobInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 	namespace        string
 }
 
-// NewTFJobInformer constructs a new informer for TFJob type.
+// NewAmlTFJobInformer constructs a new informer for AmlTFJob type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewTFJobInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredTFJobInformer(client, namespace, resyncPeriod, indexers, nil)
+func NewAmlTFJobInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredAmlTFJobInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredTFJobInformer constructs a new informer for TFJob type.
+// NewFilteredAmlTFJobInformer constructs a new informer for AmlTFJob type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredTFJobInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredAmlTFJobInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.AzuremlV1().TFJobs(namespace).List(options)
+				return client.AzuremlV1().AmlTFJobs(namespace).List(options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.AzuremlV1().TFJobs(namespace).Watch(options)
+				return client.AzuremlV1().AmlTFJobs(namespace).Watch(options)
 			},
 		},
-		&tensorflowv1.TFJob{},
+		&tensorflowv1.AmlTFJob{},
 		resyncPeriod,
 		indexers,
 	)
 }
 
-func (f *tFJobInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredTFJobInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+func (f *amlTFJobInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
+	return NewFilteredAmlTFJobInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
-func (f *tFJobInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&tensorflowv1.TFJob{}, f.defaultInformer)
+func (f *amlTFJobInformer) Informer() cache.SharedIndexInformer {
+	return f.factory.InformerFor(&tensorflowv1.AmlTFJob{}, f.defaultInformer)
 }
 
-func (f *tFJobInformer) Lister() v1.TFJobLister {
-	return v1.NewTFJobLister(f.Informer().GetIndexer())
+func (f *amlTFJobInformer) Lister() v1.AmlTFJobLister {
+	return v1.NewAmlTFJobLister(f.Informer().GetIndexer())
 }

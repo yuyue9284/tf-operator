@@ -103,7 +103,7 @@ func TestAddPod(t *testing.T) {
 
 func TestClusterSpec(t *testing.T) {
 	type tc struct {
-		tfJob               *tfv1.TFJob
+		tfJob               *tfv1.AmlTFJob
 		rt                  string
 		index               string
 		customClusterDomain string
@@ -177,7 +177,7 @@ func TestClusterSpec(t *testing.T) {
 
 func TestIsDistributed(t *testing.T) {
 	type tc struct {
-		tfJob    *tfv1.TFJob
+		tfJob    *tfv1.AmlTFJob
 		expected bool
 	}
 	testCase := []tc{
@@ -208,7 +208,7 @@ func TestIsDistributed(t *testing.T) {
 
 func TestRestartPolicy(t *testing.T) {
 	type tc struct {
-		tfJob                 *tfv1.TFJob
+		tfJob                 *tfv1.AmlTFJob
 		expectedRestartPolicy v1.RestartPolicy
 		expectedType          tfv1.TFReplicaType
 	}
@@ -307,7 +307,7 @@ func TestExitCode(t *testing.T) {
 	}
 	go run(stopCh)
 
-	ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+	ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 		return nil
 	}
 
@@ -398,7 +398,7 @@ func TestScaleDown(t *testing.T) {
 	}
 	go run(stopCh)
 
-	ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+	ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 		return nil
 	}
 
@@ -482,7 +482,7 @@ func TestScaleUp(t *testing.T) {
 	}
 	go run(stopCh)
 
-	ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+	ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 		return nil
 	}
 

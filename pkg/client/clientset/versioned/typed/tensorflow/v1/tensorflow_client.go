@@ -24,7 +24,7 @@ import (
 
 type AzuremlV1Interface interface {
 	RESTClient() rest.Interface
-	TFJobsGetter
+	AmlTFJobsGetter
 }
 
 // AzuremlV1Client is used to interact with features provided by the azureml.microsoft.com group.
@@ -32,8 +32,8 @@ type AzuremlV1Client struct {
 	restClient rest.Interface
 }
 
-func (c *AzuremlV1Client) TFJobs(namespace string) TFJobInterface {
-	return newTFJobs(c, namespace)
+func (c *AzuremlV1Client) AmlTFJobs(namespace string) AmlTFJobInterface {
+	return newAmlTFJobs(c, namespace)
 }
 
 // NewForConfig creates a new AzuremlV1Client for the given config.

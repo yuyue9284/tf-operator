@@ -89,7 +89,7 @@ func TestFailed(t *testing.T) {
 func TestStatus(t *testing.T) {
 	type testCase struct {
 		description string
-		tfJob       *tfv1.TFJob
+		tfJob       *tfv1.AmlTFJob
 
 		expectedFailedPS    int32
 		expectedSucceededPS int32
@@ -449,7 +449,7 @@ func TestStatus(t *testing.T) {
 		ctr.tfJobInformerSynced = testutil.AlwaysReady
 		ctr.PodInformerSynced = testutil.AlwaysReady
 		ctr.ServiceInformerSynced = testutil.AlwaysReady
-		ctr.updateStatusHandler = func(tfJob *tfv1.TFJob) error {
+		ctr.updateStatusHandler = func(tfJob *tfv1.AmlTFJob) error {
 			return nil
 		}
 
@@ -512,7 +512,7 @@ func TestStatus(t *testing.T) {
 	}
 }
 
-func setStatusForTest(tfJob *tfv1.TFJob, typ tfv1.TFReplicaType, failed, succeeded, active int32, t *testing.T) {
+func setStatusForTest(tfJob *tfv1.AmlTFJob, typ tfv1.TFReplicaType, failed, succeeded, active int32, t *testing.T) {
 	pod := testutil.NewBasePod("pod", tfJob)
 	var i int32
 	for i = 0; i < failed; i++ {

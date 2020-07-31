@@ -51,8 +51,8 @@ func (f *genericInformer) Lister() cache.GenericLister {
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
 	// Group=azureml.microsoft.com, Version=v1
-	case v1.SchemeGroupVersion.WithResource("tfjobs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Azureml().V1().TFJobs().Informer()}, nil
+	case v1.SchemeGroupVersion.WithResource("amltfjobs"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Azureml().V1().AmlTFJobs().Informer()}, nil
 
 	}
 

@@ -21,10 +21,10 @@ import (
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +resource:path=tfjob
+// +resource:path=amltfjob
 
-// Represents a TFJob resource.
-type TFJob struct {
+// Represents a AmlTFJob resource.
+type AmlTFJob struct {
 	// Standard Kubernetes type metadata.
 	metav1.TypeMeta `json:",inline"`
 
@@ -111,10 +111,10 @@ const (
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +resource:path=tfjobs
+// +resource:path=amltfjobs
 
-// TFJobList is a list of TFJobs.
-type TFJobList struct {
+// AmlTFJobList is a list of TFJobs.
+type AmlTFJobList struct {
 	// Standard type metadata.
 	metav1.TypeMeta `json:",inline"`
 
@@ -123,5 +123,5 @@ type TFJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 
 	// List of TFJobs.
-	Items []TFJob `json:"items"`
+	Items []AmlTFJob `json:"items"`
 }

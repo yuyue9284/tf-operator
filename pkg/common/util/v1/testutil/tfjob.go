@@ -24,7 +24,7 @@ import (
 	tfv1 "github.com/kubeflow/tf-operator/pkg/apis/tensorflow/v1"
 )
 
-func NewTFJobWithCleanPolicy(chief, worker, ps int, policy common.CleanPodPolicy) *tfv1.TFJob {
+func NewTFJobWithCleanPolicy(chief, worker, ps int, policy common.CleanPodPolicy) *tfv1.AmlTFJob {
 	if chief == 1 {
 		tfJob := NewTFJobWithChief(worker, ps)
 		tfJob.Spec.CleanPodPolicy = &policy
@@ -35,7 +35,7 @@ func NewTFJobWithCleanPolicy(chief, worker, ps int, policy common.CleanPodPolicy
 	return tfJob
 }
 
-func NewTFJobWithCleanupJobDelay(chief, worker, ps int, ttl *int32) *tfv1.TFJob {
+func NewTFJobWithCleanupJobDelay(chief, worker, ps int, ttl *int32) *tfv1.AmlTFJob {
 	if chief == 1 {
 		tfJob := NewTFJobWithChief(worker, ps)
 		tfJob.Spec.TTLSecondsAfterFinished = ttl
@@ -50,7 +50,7 @@ func NewTFJobWithCleanupJobDelay(chief, worker, ps int, ttl *int32) *tfv1.TFJob 
 	return tfJob
 }
 
-func NewTFJobWithActiveDeadlineSeconds(chief, worker, ps int, ads *int64) *tfv1.TFJob {
+func NewTFJobWithActiveDeadlineSeconds(chief, worker, ps int, ads *int64) *tfv1.AmlTFJob {
 	if chief == 1 {
 		tfJob := NewTFJobWithChief(worker, ps)
 		tfJob.Spec.ActiveDeadlineSeconds = ads
@@ -65,7 +65,7 @@ func NewTFJobWithActiveDeadlineSeconds(chief, worker, ps int, ads *int64) *tfv1.
 	return tfJob
 }
 
-func NewTFJobWithBackoffLimit(chief, worker, ps int, backoffLimit *int32) *tfv1.TFJob {
+func NewTFJobWithBackoffLimit(chief, worker, ps int, backoffLimit *int32) *tfv1.AmlTFJob {
 	if chief == 1 {
 		tfJob := NewTFJobWithChief(worker, ps)
 		tfJob.Spec.BackoffLimit = backoffLimit
@@ -82,7 +82,7 @@ func NewTFJobWithBackoffLimit(chief, worker, ps int, backoffLimit *int32) *tfv1.
 	return tfJob
 }
 
-func NewTFJobWithChief(worker, ps int) *tfv1.TFJob {
+func NewTFJobWithChief(worker, ps int) *tfv1.AmlTFJob {
 	tfJob := NewTFJob(worker, ps)
 	tfJob.Spec.TFReplicaSpecs[tfv1.TFReplicaTypeChief] = &common.ReplicaSpec{
 		Template: NewTFReplicaSpecTemplate(),
@@ -90,7 +90,7 @@ func NewTFJobWithChief(worker, ps int) *tfv1.TFJob {
 	return tfJob
 }
 
-func NewTFJobWithEvaluator(worker, ps, evaluator int) *tfv1.TFJob {
+func NewTFJobWithEvaluator(worker, ps, evaluator int) *tfv1.AmlTFJob {
 	tfJob := NewTFJob(worker, ps)
 	if evaluator > 0 {
 		evaluator := int32(evaluator)
@@ -102,14 +102,14 @@ func NewTFJobWithEvaluator(worker, ps, evaluator int) *tfv1.TFJob {
 	return tfJob
 }
 
-func NewTFJobWithSuccessPolicy(worker, ps int, successPolicy tfv1.SuccessPolicy) *tfv1.TFJob {
+func NewTFJobWithSuccessPolicy(worker, ps int, successPolicy tfv1.SuccessPolicy) *tfv1.AmlTFJob {
 	tfJob := NewTFJob(worker, ps)
 	tfJob.Spec.SuccessPolicy = &successPolicy
 	return tfJob
 }
 
-func NewTFJob(worker, ps int) *tfv1.TFJob {
-	tfJob := &tfv1.TFJob{
+func NewTFJob(worker, ps int) *tfv1.AmlTFJob {
+	tfJob := &tfv1.AmlTFJob{
 		TypeMeta: metav1.TypeMeta{
 			Kind: tfv1.Kind,
 		},
@@ -143,14 +143,14 @@ func NewTFJob(worker, ps int) *tfv1.TFJob {
 	return tfJob
 }
 
-func NewTFJobWithNamespace(worker, ps int, ns string) *tfv1.TFJob {
+func NewTFJobWithNamespace(worker, ps int, ns string) *tfv1.AmlTFJob {
 	tfJob := NewTFJob(worker, ps)
 	tfJob.Namespace = ns
 
 	return tfJob
 }
 
-func NewTFJobWithEvaluatorAndNamespace(worker, ps, evaluator int, ns string) *tfv1.TFJob {
+func NewTFJobWithEvaluatorAndNamespace(worker, ps, evaluator int, ns string) *tfv1.AmlTFJob {
 	tfJob := NewTFJobWithEvaluator(worker, ps, evaluator)
 	tfJob.Namespace = ns
 
@@ -177,7 +177,7 @@ func NewTFReplicaSpecTemplate() v1.PodTemplateSpec {
 	}
 }
 
-func SetTFJobCompletionTime(tfJob *tfv1.TFJob) {
+func SetTFJobCompletionTime(tfJob *tfv1.AmlTFJob) {
 	now := metav1.Time{Time: time.Now()}
 	tfJob.Status.CompletionTime = &now
 }

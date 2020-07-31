@@ -25,7 +25,7 @@ import (
 	tfv1 "github.com/kubeflow/tf-operator/pkg/apis/tensorflow/v1"
 )
 
-func NewBaseService(name string, tfJob *tfv1.TFJob, t *testing.T) *v1.Service {
+func NewBaseService(name string, tfJob *tfv1.AmlTFJob, t *testing.T) *v1.Service {
 	return &v1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            name,
@@ -36,7 +36,7 @@ func NewBaseService(name string, tfJob *tfv1.TFJob, t *testing.T) *v1.Service {
 	}
 }
 
-func NewService(tfJob *tfv1.TFJob, typ string, index int, t *testing.T) *v1.Service {
+func NewService(tfJob *tfv1.AmlTFJob, typ string, index int, t *testing.T) *v1.Service {
 	service := NewBaseService(fmt.Sprintf("%s-%d", typ, index), tfJob, t)
 	service.Labels[tfReplicaTypeLabel] = typ
 	service.Labels[tfReplicaIndexLabel] = fmt.Sprintf("%d", index)
@@ -44,7 +44,7 @@ func NewService(tfJob *tfv1.TFJob, typ string, index int, t *testing.T) *v1.Serv
 }
 
 // NewServiceList creates count pods with the given phase for the given tfJob
-func NewServiceList(count int32, tfJob *tfv1.TFJob, typ string, t *testing.T) []*v1.Service {
+func NewServiceList(count int32, tfJob *tfv1.AmlTFJob, typ string, t *testing.T) []*v1.Service {
 	services := []*v1.Service{}
 	for i := int32(0); i < count; i++ {
 		newService := NewService(tfJob, typ, int(i), t)
@@ -53,7 +53,7 @@ func NewServiceList(count int32, tfJob *tfv1.TFJob, typ string, t *testing.T) []
 	return services
 }
 
-func SetServices(serviceIndexer cache.Indexer, tfJob *tfv1.TFJob, typ string, activeWorkerServices int32, t *testing.T) {
+func SetServices(serviceIndexer cache.Indexer, tfJob *tfv1.AmlTFJob, typ string, activeWorkerServices int32, t *testing.T) {
 	for _, service := range NewServiceList(activeWorkerServices, tfJob, typ, t) {
 		if err := serviceIndexer.Add(service); err != nil {
 			t.Errorf("unexpected error when adding service %v", err)

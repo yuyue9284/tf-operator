@@ -149,7 +149,7 @@ func (tc *TFController) updateTFJob(old, cur interface{}) {
 	}
 }
 
-func (tc *TFController) deletePodsAndServices(tfJob *tfv1.TFJob, pods []*v1.Pod) error {
+func (tc *TFController) deletePodsAndServices(tfJob *tfv1.AmlTFJob, pods []*v1.Pod) error {
 	if len(pods) == 0 {
 		return nil
 	}
@@ -174,7 +174,7 @@ func (tc *TFController) deletePodsAndServices(tfJob *tfv1.TFJob, pods []*v1.Pod)
 	return nil
 }
 
-func (tc *TFController) cleanupTFJob(tfJob *tfv1.TFJob) error {
+func (tc *TFController) cleanupTFJob(tfJob *tfv1.AmlTFJob) error {
 	currentTime := time.Now()
 	ttl := tfJob.Spec.TTLSecondsAfterFinished
 	if ttl == nil {
@@ -200,11 +200,11 @@ func (tc *TFController) cleanupTFJob(tfJob *tfv1.TFJob) error {
 }
 
 // deleteTFJob deletes the given TFJob.
-func (tc *TFController) deleteTFJob(tfJob *tfv1.TFJob) error {
-	return tc.tfJobClientSet.AzuremlV1().TFJobs(tfJob.Namespace).Delete(tfJob.Name, &metav1.DeleteOptions{})
+func (tc *TFController) deleteTFJob(tfJob *tfv1.AmlTFJob) error {
+	return tc.tfJobClientSet.AzuremlV1().AmlTFJobs(tfJob.Namespace).Delete(tfJob.Name, &metav1.DeleteOptions{})
 }
 
-func getTotalReplicas(tfjob *tfv1.TFJob) int32 {
+func getTotalReplicas(tfjob *tfv1.AmlTFJob) int32 {
 	tfjobReplicas := int32(0)
 	for _, r := range tfjob.Spec.TFReplicaSpecs {
 		tfjobReplicas += *r.Replicas
@@ -212,7 +212,7 @@ func getTotalReplicas(tfjob *tfv1.TFJob) int32 {
 	return tfjobReplicas
 }
 
-func getTotalFailedReplicas(tfjob *tfv1.TFJob) int32 {
+func getTotalFailedReplicas(tfjob *tfv1.AmlTFJob) int32 {
 	totalFailedReplicas := int32(0)
 	for rtype := range tfjob.Status.ReplicaStatuses {
 		totalFailedReplicas += tfjob.Status.ReplicaStatuses[rtype].Failed

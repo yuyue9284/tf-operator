@@ -22,7 +22,7 @@ type UnstructuredInformer struct {
 	informer cache.SharedIndexInformer
 }
 
-func NewTFJobInformer(resource schema.GroupVersionResource, client dynamic.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) informer.TFJobInformer {
+func NewTFJobInformer(resource schema.GroupVersionResource, client dynamic.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) informer.AmlTFJobInformer {
 	return &UnstructuredInformer{
 		informer: newUnstructuredInformer(resource, client, namespace, resyncPeriod, indexers),
 	}
@@ -32,8 +32,8 @@ func (f *UnstructuredInformer) Informer() cache.SharedIndexInformer {
 	return f.informer
 }
 
-func (f *UnstructuredInformer) Lister() lister.TFJobLister {
-	return lister.NewTFJobLister(f.Informer().GetIndexer())
+func (f *UnstructuredInformer) Lister() lister.AmlTFJobLister {
+	return lister.NewAmlTFJobLister(f.Informer().GetIndexer())
 }
 
 // newUnstructuredInformer constructs a new informer for Unstructured type.

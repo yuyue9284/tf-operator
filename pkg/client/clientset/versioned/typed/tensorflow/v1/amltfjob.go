@@ -27,46 +27,46 @@ import (
 	rest "k8s.io/client-go/rest"
 )
 
-// TFJobsGetter has a method to return a TFJobInterface.
+// AmlTFJobsGetter has a method to return a AmlTFJobInterface.
 // A group's client should implement this interface.
-type TFJobsGetter interface {
-	TFJobs(namespace string) TFJobInterface
+type AmlTFJobsGetter interface {
+	AmlTFJobs(namespace string) AmlTFJobInterface
 }
 
-// TFJobInterface has methods to work with TFJob resources.
-type TFJobInterface interface {
-	Create(*v1.TFJob) (*v1.TFJob, error)
-	Update(*v1.TFJob) (*v1.TFJob, error)
-	UpdateStatus(*v1.TFJob) (*v1.TFJob, error)
+// AmlTFJobInterface has methods to work with AmlTFJob resources.
+type AmlTFJobInterface interface {
+	Create(*v1.AmlTFJob) (*v1.AmlTFJob, error)
+	Update(*v1.AmlTFJob) (*v1.AmlTFJob, error)
+	UpdateStatus(*v1.AmlTFJob) (*v1.AmlTFJob, error)
 	Delete(name string, options *metav1.DeleteOptions) error
 	DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
-	Get(name string, options metav1.GetOptions) (*v1.TFJob, error)
-	List(opts metav1.ListOptions) (*v1.TFJobList, error)
+	Get(name string, options metav1.GetOptions) (*v1.AmlTFJob, error)
+	List(opts metav1.ListOptions) (*v1.AmlTFJobList, error)
 	Watch(opts metav1.ListOptions) (watch.Interface, error)
-	Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.TFJob, err error)
-	TFJobExpansion
+	Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.AmlTFJob, err error)
+	AmlTFJobExpansion
 }
 
-// tFJobs implements TFJobInterface
-type tFJobs struct {
+// amlTFJobs implements AmlTFJobInterface
+type amlTFJobs struct {
 	client rest.Interface
 	ns     string
 }
 
-// newTFJobs returns a TFJobs
-func newTFJobs(c *AzuremlV1Client, namespace string) *tFJobs {
-	return &tFJobs{
+// newAmlTFJobs returns a AmlTFJobs
+func newAmlTFJobs(c *AzuremlV1Client, namespace string) *amlTFJobs {
+	return &amlTFJobs{
 		client: c.RESTClient(),
 		ns:     namespace,
 	}
 }
 
-// Get takes name of the tFJob, and returns the corresponding tFJob object, and an error if there is any.
-func (c *tFJobs) Get(name string, options metav1.GetOptions) (result *v1.TFJob, err error) {
-	result = &v1.TFJob{}
+// Get takes name of the amlTFJob, and returns the corresponding amlTFJob object, and an error if there is any.
+func (c *amlTFJobs) Get(name string, options metav1.GetOptions) (result *v1.AmlTFJob, err error) {
+	result = &v1.AmlTFJob{}
 	err = c.client.Get().
 		Namespace(c.ns).
-		Resource("tfjobs").
+		Resource("amltfjobs").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
 		Do().
@@ -74,16 +74,16 @@ func (c *tFJobs) Get(name string, options metav1.GetOptions) (result *v1.TFJob, 
 	return
 }
 
-// List takes label and field selectors, and returns the list of TFJobs that match those selectors.
-func (c *tFJobs) List(opts metav1.ListOptions) (result *v1.TFJobList, err error) {
+// List takes label and field selectors, and returns the list of AmlTFJobs that match those selectors.
+func (c *amlTFJobs) List(opts metav1.ListOptions) (result *v1.AmlTFJobList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
 	}
-	result = &v1.TFJobList{}
+	result = &v1.AmlTFJobList{}
 	err = c.client.Get().
 		Namespace(c.ns).
-		Resource("tfjobs").
+		Resource("amltfjobs").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
 		Do().
@@ -91,8 +91,8 @@ func (c *tFJobs) List(opts metav1.ListOptions) (result *v1.TFJobList, err error)
 	return
 }
 
-// Watch returns a watch.Interface that watches the requested tFJobs.
-func (c *tFJobs) Watch(opts metav1.ListOptions) (watch.Interface, error) {
+// Watch returns a watch.Interface that watches the requested amlTFJobs.
+func (c *amlTFJobs) Watch(opts metav1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -100,32 +100,32 @@ func (c *tFJobs) Watch(opts metav1.ListOptions) (watch.Interface, error) {
 	opts.Watch = true
 	return c.client.Get().
 		Namespace(c.ns).
-		Resource("tfjobs").
+		Resource("amltfjobs").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
 		Watch()
 }
 
-// Create takes the representation of a tFJob and creates it.  Returns the server's representation of the tFJob, and an error, if there is any.
-func (c *tFJobs) Create(tFJob *v1.TFJob) (result *v1.TFJob, err error) {
-	result = &v1.TFJob{}
+// Create takes the representation of a amlTFJob and creates it.  Returns the server's representation of the amlTFJob, and an error, if there is any.
+func (c *amlTFJobs) Create(amlTFJob *v1.AmlTFJob) (result *v1.AmlTFJob, err error) {
+	result = &v1.AmlTFJob{}
 	err = c.client.Post().
 		Namespace(c.ns).
-		Resource("tfjobs").
-		Body(tFJob).
+		Resource("amltfjobs").
+		Body(amlTFJob).
 		Do().
 		Into(result)
 	return
 }
 
-// Update takes the representation of a tFJob and updates it. Returns the server's representation of the tFJob, and an error, if there is any.
-func (c *tFJobs) Update(tFJob *v1.TFJob) (result *v1.TFJob, err error) {
-	result = &v1.TFJob{}
+// Update takes the representation of a amlTFJob and updates it. Returns the server's representation of the amlTFJob, and an error, if there is any.
+func (c *amlTFJobs) Update(amlTFJob *v1.AmlTFJob) (result *v1.AmlTFJob, err error) {
+	result = &v1.AmlTFJob{}
 	err = c.client.Put().
 		Namespace(c.ns).
-		Resource("tfjobs").
-		Name(tFJob.Name).
-		Body(tFJob).
+		Resource("amltfjobs").
+		Name(amlTFJob.Name).
+		Body(amlTFJob).
 		Do().
 		Into(result)
 	return
@@ -134,24 +134,24 @@ func (c *tFJobs) Update(tFJob *v1.TFJob) (result *v1.TFJob, err error) {
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
 
-func (c *tFJobs) UpdateStatus(tFJob *v1.TFJob) (result *v1.TFJob, err error) {
-	result = &v1.TFJob{}
+func (c *amlTFJobs) UpdateStatus(amlTFJob *v1.AmlTFJob) (result *v1.AmlTFJob, err error) {
+	result = &v1.AmlTFJob{}
 	err = c.client.Put().
 		Namespace(c.ns).
-		Resource("tfjobs").
-		Name(tFJob.Name).
+		Resource("amltfjobs").
+		Name(amlTFJob.Name).
 		SubResource("status").
-		Body(tFJob).
+		Body(amlTFJob).
 		Do().
 		Into(result)
 	return
 }
 
-// Delete takes name of the tFJob and deletes it. Returns an error if one occurs.
-func (c *tFJobs) Delete(name string, options *metav1.DeleteOptions) error {
+// Delete takes name of the amlTFJob and deletes it. Returns an error if one occurs.
+func (c *amlTFJobs) Delete(name string, options *metav1.DeleteOptions) error {
 	return c.client.Delete().
 		Namespace(c.ns).
-		Resource("tfjobs").
+		Resource("amltfjobs").
 		Name(name).
 		Body(options).
 		Do().
@@ -159,14 +159,14 @@ func (c *tFJobs) Delete(name string, options *metav1.DeleteOptions) error {
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *tFJobs) DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error {
+func (c *amlTFJobs) DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error {
 	var timeout time.Duration
 	if listOptions.TimeoutSeconds != nil {
 		timeout = time.Duration(*listOptions.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
 		Namespace(c.ns).
-		Resource("tfjobs").
+		Resource("amltfjobs").
 		VersionedParams(&listOptions, scheme.ParameterCodec).
 		Timeout(timeout).
 		Body(options).
@@ -174,12 +174,12 @@ func (c *tFJobs) DeleteCollection(options *metav1.DeleteOptions, listOptions met
 		Error()
 }
 
-// Patch applies the patch and returns the patched tFJob.
-func (c *tFJobs) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.TFJob, err error) {
-	result = &v1.TFJob{}
+// Patch applies the patch and returns the patched amlTFJob.
+func (c *amlTFJobs) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.AmlTFJob, err error) {
+	result = &v1.AmlTFJob{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
-		Resource("tfjobs").
+		Resource("amltfjobs").
 		SubResource(subresources...).
 		Name(name).
 		Body(data).
